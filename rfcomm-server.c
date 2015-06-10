@@ -4,7 +4,7 @@
 #include <bluetooth/bluetooth.h>
 #include <bluetooth/rfcomm.h>
 
-int main(int argc, char **argv)
+int main(int argc, char *argv[])
 {
 	struct sockaddr_rc loc_addr = { 0 }, rem_addr = { 0 };
 	char buf[1024] = { 0 };
@@ -18,7 +18,7 @@ int main(int argc, char **argv)
 	// local bluetooth adapter
 	loc_addr.rc_family = AF_BLUETOOTH;
 	loc_addr.rc_bdaddr = *BDADDR_ANY;
-	loc_addr.rc_channel = (uint8_t) 1;
+	loc_addr.rc_channel = (uint8_t)1;
 	bind(s, (struct sockaddr *)&loc_addr, sizeof(loc_addr));
 
 	// put socket into listening mode
@@ -27,13 +27,13 @@ int main(int argc, char **argv)
 	// accept one connection
 	client = accept(s, (struct sockaddr *)&rem_addr, &opt);
 
-	ba2str( &rem_addr.rc_bdaddr, buf );
+	ba2str(&rem_addr.rc_bdaddr, buf);
 	fprintf(stderr, "accepted connection from %s\n", buf);
 	memset(buf, 0, sizeof(buf));
 
 	// read data from the client
 	bytes_read = read(client, buf, sizeof(buf));
-	if( bytes_read > 0 ) {
+	if (bytes_read > 0) {
 		printf("received [%s]\n", buf);
 	}
 
