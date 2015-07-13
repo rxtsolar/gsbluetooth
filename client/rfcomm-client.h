@@ -22,7 +22,11 @@ public:
 
 	void loop(void)
 	{
-		clientSock.sendMessage("hello");
+		string message;
+		while (1) {
+			cin >> message;
+			clientSock.sendMessage(message);
+		}
 	}
 
 private:
