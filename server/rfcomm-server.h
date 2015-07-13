@@ -18,7 +18,9 @@ public:
 
 	void loop(void)
 	{
-		cout << serverSock.getMessage() << endl;
+		while (1) {
+			cout << serverSock.getMessage() << endl;
+		}
 	}
 
 private:
