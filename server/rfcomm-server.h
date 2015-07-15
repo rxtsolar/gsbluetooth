@@ -19,10 +19,15 @@ public:
 	void loop(void)
 	{
 		serverSock.setRecvTimeout(1);
+		cout << "connected" << endl;
 		while (1) {
 			string message;
 			while (!serverSock.getMessage(message)) {
-				cout << "waiting" << endl;
+				if (!serverSock.isConnected()) {
+					cout << "disconnected" << endl;
+					serverSock.closeSocket();
+					return;
+				}
 			}
 			cout << "got message: " << message << endl;
 		}

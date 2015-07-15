@@ -130,6 +130,11 @@ public:
 		}
 	}
 
+	~ServerRfcommSocket(void)
+	{
+		closeSocket();
+	}
+
 	void acceptSocket(void)
 	{
 		int s = accept(sock, (sockaddr*)&acceptAddr, &acceptLen);
@@ -138,6 +143,11 @@ public:
 			exit(-1);
 		}
 		connectSock.setSocket(s);
+	}
+
+	void closeSocket(void)
+	{
+		connectSock.closeSocket();
 	}
 
 	void setRecvTimeout(int seconds)
@@ -168,11 +178,17 @@ public:
 		return true;
 	}
 
+	bool isConnected(void)
+	{
+		if (connectSock.sendSocket("test") < 0)
+			return false;
+		return true;
+	}
+
 protected:
 	RfcommSocket connectSock;
 	sockaddr_rc acceptAddr;
 	socklen_t acceptLen;
-
 };
 
 class ClientRfcommSocket : public RfcommSocket {
