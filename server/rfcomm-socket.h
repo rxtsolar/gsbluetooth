@@ -92,6 +92,7 @@ public:
 	int recvSocket(string& data) const
 	{
 		char buffer[2048];
+		memset(buffer, 0, 2048);
 		int ret = recvSocket(buffer, 2048);
 		data = string(buffer);
 		return ret;
