@@ -18,8 +18,13 @@ public:
 
 	void loop(void)
 	{
+		serverSock.setRecvTimeout(1);
 		while (1) {
-			cout << serverSock.getMessage() << endl;
+			string message;
+			while (!serverSock.getMessage(message)) {
+				cout << "waiting" << endl;
+			}
+			cout << "got message: " << message << endl;
 		}
 	}
 

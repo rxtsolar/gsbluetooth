@@ -56,6 +56,24 @@ public:
 		str2ba(bd.c_str(), &addr.rc_bdaddr);
 	}
 
+	int setRecvTimeout(int seconds)
+	{
+		timeval timeout;
+		timeout.tv_sec = seconds;
+		timeout.tv_usec = 0;
+		return setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO,
+				(char*)&timeout, sizeof(timeout));
+	}
+
+	int setSendTimeout(int seconds)
+	{
+		timeval timeout;
+		timeout.tv_sec = seconds;
+		timeout.tv_usec = 0;
+		return setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO,
+				(char*)&timeout, sizeof(timeout));
+	}
+
 	int sendSocket(const char* data, int len) const
 	{
 		return send(sock, data, len, 0);
@@ -122,16 +140,32 @@ public:
 		connectSock.setSocket(s);
 	}
 
+	void setRecvTimeout(int seconds)
+	{
+		if (connectSock.setRecvTimeout(seconds) < 0) {
+			perror("setsockopt");
+			exit(-1);
+		}
+	}
+
+	void setSendTimeout(int seconds)
+	{
+		if (connectSock.setSendTimeout(seconds) < 0) {
+			perror("setsockopt");
+			exit(-1);
+		}
+	}
+
 	void sendMessage(const string& message)
 	{
 		connectSock.sendSocket(message);
 	}
 
-	string getMessage(void)
+	bool getMessage(string& message)
 	{
-		string message;
-		connectSock.recvSocket(message);
-		return message;
+		if (connectSock.recvSocket(message) < 0)
+			return false;
+		return true;
 	}
 
 protected:
