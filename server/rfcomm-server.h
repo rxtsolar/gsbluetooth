@@ -1,7 +1,7 @@
 #ifndef GS_RFCOMM_SERVER_H
 #define GS_RFCOMM_SERVER_H
 
-#include "rfcomm-socket.h"
+#include "../rfcomm-socket.h"
 
 #include <iostream>
 
